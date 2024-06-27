@@ -1,0 +1,23 @@
+/* src/styles/LandingPage.css */
+.landing-page {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .landing-buttons {
+    margin-top: 20px;
+  }
+  
+  .landing-buttons .btn {
+    margin: 0 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    background-color: #007BFF;
+    border-radius: 5px;
+  }
+  
+  .landing-buttons .btn:hover {
+    background-color: #0056b3;
+  }
+  
