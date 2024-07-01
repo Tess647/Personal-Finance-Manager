@@ -1,4 +1,4 @@
-// src/redux/actions.js
+// src/store/actions.js
 import {
     ADD_EXPENSE, REMOVE_EXPENSE, UPDATE_EXPENSE,
     ADD_BUDGET, REMOVE_BUDGET, UPDATE_BUDGET,

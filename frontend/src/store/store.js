@@ -1,4 +1,4 @@
-// src/redux/store.js
+// src/store/store.js
 import { configureStore } from 'redux';
 import rootReducer from './reducers';
 
