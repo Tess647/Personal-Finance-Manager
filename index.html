@@ -1,39 +1,67 @@
-<!-- landing-page/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Landing Page</title>
+    <title>Chremeta - Personal Finance Manager</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="#project">Project</a></li>
-                <li><a href="#about">About Me</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+    <nav>
+        <ul>
+            <li><a href="#intro">Intro</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="intro">
+        <img src="chremeta_cover.jpeg" alt="Personal Finance Cover">
+        <div class="intro-text">
+            <h1>Chremeta</h1>
+            <p>Your Personal Finance Manager</p>
+            <button onclick="location.href='YOUR_DEPLOYED_PROJECT_URL'">View Project</button>
+        </div>
     </header>
-    <main>
-        <section id="project">
-            <h2>About the Project</h2>
-            <p>Describe your project here...</p>
-            <a href="https://your-deployed-app-url.com" class="btn">View Deployed App</a>
-            <a href="https://github.com/tess647/personal-finance-manager" class="btn">View on GitHub</a>
-        </section>
-        <section id="about">
-            <h2>About Me</h2>
-            <p>Tell your story as a developer here...</p>
-        </section>
-        <section id="contact">
-            <h2>Contact Me</h2>
-            <p>Find me on <a href="https://github.com/tess647">GitHub</a> and <a href="https://www.linkedin.com/in/taslihah-thanni-339b7b171/">LinkedIn</a></p>
-        </section>
-    </main>
+
+    <section id="features">
+        <h2>Key Features</h2>
+        <div class="feature">
+            <img src="budgets.jpg" alt="Budgets Feature">
+            <h3>Budgeting</h3>
+            <p>Set spending limits for different categories and manage your budget efficiently.</p>
+        </div>
+        <div class="feature">
+            <img src="goals.jpg" alt="Goals Feature">
+            <h3>Savings Goals</h3>
+            <p>Define and track your savings objectives to meet your financial goals.</p>
+        </div>
+        <div class="feature">
+            <img src="expenses.jpg" alt="Expenses Feature">
+            <h3>Expense Tracker</h3>
+            <p>Tracks all transactions.</p>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About the Project</h2>
+        <p>Chremeta aims to provide a simple, user-friendly application for tracking daily expenses and income, setting savings goals, and budgeting to control spending. I created this project to fulfill my personal need for an intuitive finance manager.</p>
+        <p>This project was inspired by my personal experience with complex finance management tools. I wanted something simpler and more user-friendly. This project also serves as a Portfolio Project for Holberton School.</p>
+        <p>Team Members:</p>
+        <ul>
+            <li><a href="https://github.com/tess647">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/taslihah-thanni-339b7b171/">LinkedIn</a></li>
+            <li><a href="https://x.com/TessFoster15">Twitter</a></li>
+        </ul>
+        <p><a href="https://github.com/Tess647/Personal-Finance-Manager">GitHub Repository</a></p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <p>Find me on <a href="https://github.com/tess647">GitHub</a>, <a href="https://x.com/TessFoster15">Twitter</a> and <a href="https://www.linkedin.com/in/taslihah-thanni-339b7b171/">LinkedIn</a>.</p>
+    </section>
+
     <footer>
         <p>&copy; 2024 Thanni Taslihah</p>
     </footer>

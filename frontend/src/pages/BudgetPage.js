@@ -36,11 +36,26 @@ function BudgetPage() {
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="End Date" required />
         <button type="submit">Add Budget</button>
       </form>
-      <ul>
-        {budgets.map(budget => (
-          <li key={budget.id}>{budget.category} - {budget.amount} - {budget.startDate} - {budget.endDate}</li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {budgets.map(budget => (
+            <tr key={budget.id}>
+              <td>{budget.category}</td>
+              <td>{budget.amount}</td>
+              <td>{budget.startDate}</td>
+              <td>{budget.endDate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

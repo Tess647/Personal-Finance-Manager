@@ -36,11 +36,26 @@ function ExpensePage() {
         <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
         <button type="submit">Add Expense</button>
       </form>
-      <ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+      <tbody>
         {expenses.map(expense => (
-          <li key={expense.id}>{expense.amount} - {expense.category} - {expense.date} - {expense.description}</li>
+          <tr key={expense.id}>
+            <td>{expense.amount}</td>
+            <td>{expense.category}</td>
+            <td>{expense.date}</td>
+            <td>{expense.description}</td>
+          </tr>
         ))}
-      </ul>
+      </tbody>
+      </table>
     </div>
   );
 }

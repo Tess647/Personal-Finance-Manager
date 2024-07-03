@@ -34,11 +34,24 @@ function GoalPage() {
         <input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} placeholder="Deadline" required />
         <button type="submit">Add Goal</button>
       </form>
-      <ul>
-        {goals.map(goal => (
-          <li key={goal.id}>{goal.goalName} - {goal.targetAmount} - {goal.deadline}</li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Goal Name</th>
+            <th>Target Amount</th>
+            <th>Deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          {goals.map(goal => (
+            <tr key={goal.id}>
+              <td>{goal.goalName}</td>
+              <td>{goal.targetAmount}</td>
+              <td>{goal.deadline}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
