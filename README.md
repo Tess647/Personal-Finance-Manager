@@ -3,7 +3,7 @@
 ## Introduction
 Budget Tracker is a comprehensive web application designed to help you manage your finances efficiently. With Budget Tracker, you can track your expenses, set and monitor budgets, and define financial goals. Our intuitive interface makes financial management simple and accessible for everyone.
 
-![Budget Tracker Screenshot](./expenses.png)
+![Budget Tracker Screenshot](./expenses.jpg)
 
 - **Deployed Site**: [Budget Tracker](http://your-deployed-site-url.com)
 - **Blog Article**: [Read about the development journey](https://medium.com/@tessybadru/blog-post-b948aaf84c3c)
