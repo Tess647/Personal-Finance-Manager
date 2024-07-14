@@ -19,16 +19,16 @@ function SignInPage() {
     const user = { email, password }; // Create a user object
 
     // Make a POST request to the sign-in API endpoint
-    axios.post('http://localhost:5000/api/v1/user/login', user)
+    axios.post('http://localhost:5000/api/v1/users/login', user)
       .then(response => {
         // Extract the JWT token from the response
-        const token = response.data.token;
+        const token = response.token;
 
         // Save the token in localStorage
         localStorage.setItem('token', token);
 
         // Log success and navigate to home page
-        console.log('Sign in successful:', response.data);
+        console.log('Sign in successful:', response);
         navigate('/home');
       })
       .catch(error => console.error('Error during sign in:', error)); // Log any errors
