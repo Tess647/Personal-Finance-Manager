@@ -1,4 +1,11 @@
-{
+{ 
+  "name": "personal-finance-manager",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+  "start": "concurrently \"npm run start:prod --prefix backend\" \"npm run start --prefix frontend\"",
+  "dev": "concurrently \"npm run start:prod --prefix backend\" \"npm run start --prefix frontend\""
+    },
   "dependencies": {
     "axios": "^1.7.2",
     "react-redux": "^9.1.2",
@@ -6,6 +13,7 @@
     "redux": "^5.0.1"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "gh-pages": "^6.1.1"
   }
 }

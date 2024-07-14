@@ -12,6 +12,9 @@ function GoalPage() {
   const [targetAmount, setTargetAmount] = useState('');
   const [deadline, setDeadline] = useState('');
 
+  // list of categories 
+  const goalCategories = ['Vacation', 'Emergency Fund', 'Education', 'Down Payment', 'Retirement', 'Other'];
+
   // useEffect hook to fetch goals when the component mounts
   useEffect(() => {
     // Fetch goals from API

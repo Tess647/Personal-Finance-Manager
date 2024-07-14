@@ -1,11 +1,33 @@
 // src/pages/HomePage.js
 // Importing necessary libraries and components
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/HomePage.css';
 
 // Functional component for the Home Page
 function HomePage() {
+  // State to hold financial summary
+  const [summary, setSummary] = useState({
+    totalBalance: 0,
+    monthlyExpenses: 0,
+    goalsProgress: 0,
+  });
+
+  // Fetch data from backend when component mounts
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const response = await axios.get('/api/dashboard');
+        setSummary(response.data);
+      } catch (error) {
+        console.error('Error fetching summary data', error);
+      }
+    };
+
+    fetchSummary();
+  }, []);
+
   // Render the home page
   return (
     <div className="homepage">
@@ -15,16 +37,16 @@ function HomePage() {
       {/* Section to display summary stats */}
       <div className="stats">
         <div className="stat">
-          <h2>Total Expenses</h2>
-          <p>$0</p>
+          <h2>Total Balance</h2>
+          <p>${summary.totalBalance}</p>
         </div>
         <div className="stat">
-          <h2>Total Budgets</h2>
-          <p>$0</p>
+          <h2>Monthly Expenses</h2>
+          <p>${summary.monthlyExpenses}</p>
         </div>
         <div className="stat">
-          <h2>Total Goals</h2>
-          <p>0</p>
+          <h2>Goals Progress</h2>
+          <p>{summary.goalsProgress}%</p>
         </div>
       </div>
       

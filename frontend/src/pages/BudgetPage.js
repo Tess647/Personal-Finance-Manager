@@ -12,13 +12,32 @@ function BudgetPage() {
   const [amount, setAmount] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [totalExpenses, setTotalExpenses] = useState({});
 
-  // useEffect hook to fetch budgets when the component mounts
+  // budgetCategories list
+  const budgetCategories = [
+    'Food', 'Transportation', 'Utilities', 'Healthcare', 'Entertainment',
+    'Groceries', 'Rent', 'Savings', 'Insurance', 'Leisure', 'Other'
+  ];
+
+  // useEffect hook to fetch budgets and expenses when the component mounts
   useEffect(() => {
     // Fetch budgets from API
     axios.get('/api/budgets')
       .then(response => setBudgets(response.data))
       .catch(error => console.error("Error fetching budgets:", error));
+
+    // Fetch expenses for each category
+    budgetCategories.forEach(category => {
+      axios.get('/api/expenses', { params: { category } })
+        .then(response => {
+          setTotalExpenses(prevExpenses => ({
+            ...prevExpenses,
+            [category]: response.data.total
+          }));
+        })
+        .catch(error => console.error(`Error fetching expenses for ${category}:`, error));
+    });
   }, []);
 
   // Handler function for adding a new budget
@@ -37,13 +56,12 @@ function BudgetPage() {
     <div className="page">
       <h2>Budgets</h2>
       <form onSubmit={handleAddBudget}>
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
-          required
-        />
+        <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <option value="" disabled>Select Category</option>
+          {budgetCategories.map(cat => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
         <input
           type="number"
           value={amount}
@@ -71,20 +89,28 @@ function BudgetPage() {
         <thead>
           <tr>
             <th>Category</th>
-            <th>Amount</th>
+            <th>Budget Amount</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Total Expenses</th>
+            <th>Remaining Budget</th>
           </tr>
         </thead>
         <tbody>
-          {budgets.map(budget => (
-            <tr key={budget.id}>
-              <td>{budget.category}</td>
-              <td>{budget.amount}</td>
-              <td>{budget.startDate}</td>
-              <td>{budget.endDate}</td>
-            </tr>
-          ))}
+          {budgets.map(budget => {
+            const totalExpense = totalExpenses[budget.category] || 0;
+            const remainingBudget = budget.amount - totalExpense;
+            return (
+              <tr key={budget.id}>
+                <td>{budget.category}</td>
+                <td>{budget.amount}</td>
+                <td>{budget.startDate}</td>
+                <td>{budget.endDate}</td>
+                <td>{totalExpense}</td>
+                <td>{remainingBudget}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

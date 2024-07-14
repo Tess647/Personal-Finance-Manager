@@ -12,14 +12,36 @@ function ExpensePage() {
   const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
+  const [totalExpenses, setTotalExpenses] = useState({});
+
+  // expenseCategories list
+  const expenseCategories = [
+    'Food', 'Transportation', 'Utilities', 'Healthcare', 'Entertainment',
+    'Groceries', 'Rent', 'Savings', 'Insurance', 'Leisure', 'Other'
+  ];
 
   // useEffect hook to fetch expenses when the component mounts
   useEffect(() => {
     // Fetch expenses from API
     axios.get('/api/expenses')
-      .then(response => setExpenses(response.data))
+      .then(response => {
+        setExpenses(response.data);
+        calculateTotalExpenses(response.data);
+      })
       .catch(error => console.error("Error fetching expenses:", error));
   }, []);
+
+  // Function to calculate total expenses by category
+  const calculateTotalExpenses = (expenses) => {
+    const totals = {};
+    expenses.forEach(expense => {
+      if (!totals[expense.category]) {
+        totals[expense.category] = 0;
+      }
+      totals[expense.category] += parseFloat(expense.amount);
+    });
+    setTotalExpenses(totals);
+  };
 
   // Handler function for adding a new expense
   const handleAddExpense = (e) => {
@@ -28,7 +50,11 @@ function ExpensePage() {
 
     // Save expense to API
     axios.post('/api/expenses', newExpense)
-      .then(response => setExpenses([...expenses, response.data]))
+      .then(response => {
+        const updatedExpenses = [...expenses, response.data];
+        setExpenses(updatedExpenses);
+        calculateTotalExpenses(updatedExpenses); // Recalculate totals
+      })
       .catch(error => console.error("Error adding expense:", error)); // Log any errors
   };
 
@@ -44,13 +70,15 @@ function ExpensePage() {
           placeholder="Amount"
           required
         />
-        <input
-          type="text"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
-          required
-        />
+          required>
+          <option value="" disabled>Select Category</option>
+          {expenseCategories.map(cat => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
         <input
           type="date"
           value={date}
@@ -67,6 +95,14 @@ function ExpensePage() {
         />
         <button type="submit">Add Expense</button>
       </form>
+      <h3>Total Expenses by Category</h3>
+      <ul>
+        {Object.keys(totalExpenses).map(category => (
+          <li key={category}>
+            {category}: ${totalExpenses[category].toFixed(2)}
+          </li>
+        ))}
+      </ul>
       <table>
         <thead>
           <tr>

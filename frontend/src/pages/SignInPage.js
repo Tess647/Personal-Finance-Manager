@@ -8,7 +8,7 @@ import '../styles/FormPage.css';
 // Functional component for the Sign In Page
 function SignInPage() {
   // useState hooks for managing form inputs
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // useNavigate hook to programmatically navigate
   const navigate = useNavigate();
@@ -16,11 +16,17 @@ function SignInPage() {
   // Handler function for sign in form submission
   const handleSignIn = (e) => {
     e.preventDefault(); // Prevent default form submission
-    const user = { username, password }; // Create a user object
+    const user = { email, password }; // Create a user object
 
     // Make a POST request to the sign-in API endpoint
-    axios.post('/api/signin', user)
+    axios.post('http://localhost:5000/api/v1/user/login', user)
       .then(response => {
+        // Extract the JWT token from the response
+        const token = response.data.token;
+
+        // Save the token in localStorage
+        localStorage.setItem('token', token);
+
         // Log success and navigate to home page
         console.log('Sign in successful:', response.data);
         navigate('/home');
@@ -35,9 +41,9 @@ function SignInPage() {
       <form onSubmit={handleSignIn}>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           required
         />
         <input
