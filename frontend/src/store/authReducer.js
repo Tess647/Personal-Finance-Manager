@@ -1,6 +1,6 @@
 // src/store/authReducer.js
 
-import { SIGN_IN, SIGN_OUT } from '../store/authActions';
+import { SIGN_IN, SIGN_OUT } from './actionTypes';
 
 // Initial state for the authentication reducer
 const initialState = {

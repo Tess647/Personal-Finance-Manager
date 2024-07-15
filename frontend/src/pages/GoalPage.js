@@ -1,43 +1,45 @@
 // src/pages/GoalPage.js
-// Importing necessary libraries and components
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import '../styles/Page.css';
 
-// Functional component for the Goal Page
-function GoalPage() {
-  // useState hooks for managing form inputs and goals data
+const GoalPage = () => {
   const [goals, setGoals] = useState([]);
   const [goalName, setGoalName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [deadline, setDeadline] = useState('');
+  const [error, setError] = useState('');
 
-  // list of categories 
-  const goalCategories = ['Vacation', 'Emergency Fund', 'Education', 'Down Payment', 'Retirement', 'Other'];
-
-  // useEffect hook to fetch goals when the component mounts
   useEffect(() => {
-    // Fetch goals from API
     axios.get('/api/goals')
       .then(response => setGoals(response.data))
-      .catch(error => console.error("Error fetching goals:", error));
+      .catch(error => {
+        console.error("Error fetching goals:", error);
+        setError('Error fetching goals');
+      });
   }, []);
 
-  // Handler function for adding a new goal
   const handleAddGoal = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    const newGoal = { goalName, targetAmount, deadline }; // Create a new goal object
+    e.preventDefault();
+    const newGoal = { goalName, targetAmount, deadline };
 
-    // Save goal to API
     axios.post('/api/goals', newGoal)
-      .then(response => setGoals([...goals, response.data]))
-      .catch(error => console.error("Error adding goal:", error)); // Log any errors
+      .then(response => {
+        setGoals([...goals, response.data]);
+        setGoalName('');
+        setTargetAmount('');
+        setDeadline('');
+      })
+      .catch(error => {
+        console.error("Error adding goal:", error);
+        setError('Error adding goal');
+      });
   };
 
-  // Render the goal form and list
   return (
     <div className="page">
       <h2>Goals</h2>
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleAddGoal}>
         <input
           type="text"
@@ -82,7 +84,6 @@ function GoalPage() {
       </table>
     </div>
   );
-}
+};
 
-// Exporting the GoalPage component as the default export
 export default GoalPage;

@@ -2,7 +2,7 @@
 // Importing necessary libraries and components
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import '../styles/HomePage.css';
 
 // Functional component for the Home Page

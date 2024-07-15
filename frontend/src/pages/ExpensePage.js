@@ -1,37 +1,34 @@
 // src/pages/ExpensePage.js
-// Importing necessary libraries and components
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import '../styles/Page.css';
 
-// Functional component for the Expense Page
-function ExpensePage() {
-  // useState hooks for managing form inputs and expenses data
+const ExpensePage = () => {
   const [expenses, setExpenses] = useState([]);
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [totalExpenses, setTotalExpenses] = useState({});
+  const [error, setError] = useState('');
 
-  // expenseCategories list
   const expenseCategories = [
     'Food', 'Transportation', 'Utilities', 'Healthcare', 'Entertainment',
     'Groceries', 'Rent', 'Savings', 'Insurance', 'Leisure', 'Other'
   ];
 
-  // useEffect hook to fetch expenses when the component mounts
   useEffect(() => {
-    // Fetch expenses from API
     axios.get('/api/expenses')
       .then(response => {
         setExpenses(response.data);
         calculateTotalExpenses(response.data);
       })
-      .catch(error => console.error("Error fetching expenses:", error));
+      .catch(error => {
+        console.error("Error fetching expenses:", error);
+        setError('Error fetching expenses');
+      });
   }, []);
 
-  // Function to calculate total expenses by category
   const calculateTotalExpenses = (expenses) => {
     const totals = {};
     expenses.forEach(expense => {
@@ -43,25 +40,30 @@ function ExpensePage() {
     setTotalExpenses(totals);
   };
 
-  // Handler function for adding a new expense
   const handleAddExpense = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    const newExpense = { amount, category, date, description }; // Create a new expense object
+    e.preventDefault();
+    const newExpense = { amount, category, date, description };
 
-    // Save expense to API
     axios.post('/api/expenses', newExpense)
       .then(response => {
         const updatedExpenses = [...expenses, response.data];
         setExpenses(updatedExpenses);
-        calculateTotalExpenses(updatedExpenses); // Recalculate totals
+        calculateTotalExpenses(updatedExpenses);
+        setAmount('');
+        setCategory('');
+        setDate('');
+        setDescription('');
       })
-      .catch(error => console.error("Error adding expense:", error)); // Log any errors
+      .catch(error => {
+        console.error("Error adding expense:", error);
+        setError('Error adding expense');
+      });
   };
 
-  // Render the expense form and list
   return (
     <div className="page">
       <h2>Expenses</h2>
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleAddExpense}>
         <input
           type="number"
@@ -125,7 +127,6 @@ function ExpensePage() {
       </table>
     </div>
   );
-}
+};
 
-// Exporting the ExpensePage component as the default export
 export default ExpensePage;

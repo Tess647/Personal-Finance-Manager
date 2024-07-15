@@ -1,40 +1,23 @@
 // src/pages/SignInPage.js
-// Importing necessary libraries and components
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../store/authActions';
+//import axios from 'axios';
 import '../styles/FormPage.css';
 
-// Functional component for the Sign In Page
 function SignInPage() {
-  // useState hooks for managing form inputs
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // useNavigate hook to programmatically navigate
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Handler function for sign in form submission
   const handleSignIn = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    const user = { email, password }; // Create a user object
-
-    // Make a POST request to the sign-in API endpoint
-    axios.post('http://localhost:5000/api/v1/users/login', user)
-      .then(response => {
-        // Extract the JWT token from the response
-        const token = response.token;
-
-        // Save the token in localStorage
-        localStorage.setItem('token', token);
-
-        // Log success and navigate to home page
-        console.log('Sign in successful:', response);
-        navigate('/home');
-      })
-      .catch(error => console.error('Error during sign in:', error)); // Log any errors
+    e.preventDefault();
+    dispatch(signIn(email, password, navigate)); // Pass navigate to signIn action
   };
 
-  // Render the sign in form
   return (
     <div className="form-page">
       <h2>Sign In</h2>
@@ -59,5 +42,4 @@ function SignInPage() {
   );
 }
 
-// Exporting the SignInPage component as the default export
 export default SignInPage;

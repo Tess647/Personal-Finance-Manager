@@ -14,3 +14,7 @@ export const UPDATE_BUDGET = 'UPDATE_BUDGET'; // Action type for updating a budg
 export const ADD_GOAL = 'ADD_GOAL'; // Action type for adding a goal
 export const REMOVE_GOAL = 'REMOVE_GOAL'; // Action type for removing a goal
 export const UPDATE_GOAL = 'UPDATE_GOAL'; // Action type for updating a goal
+
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
+export const CHECK_AUTH = 'CHECK_AUTH';

@@ -1,60 +1,64 @@
 // src/pages/BudgetPage.js
-// Importing necessary libraries and components
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import '../styles/Page.css';
 
-// Functional component for the Budget Page
-function BudgetPage() {
-  // useState hooks for managing form inputs and budgets data
+const BudgetPage = () => {
   const [budgets, setBudgets] = useState([]);
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [totalExpenses, setTotalExpenses] = useState({});
+  const [error, setError] = useState('');
 
-  // budgetCategories list
   const budgetCategories = [
     'Food', 'Transportation', 'Utilities', 'Healthcare', 'Entertainment',
     'Groceries', 'Rent', 'Savings', 'Insurance', 'Leisure', 'Other'
   ];
 
-  // useEffect hook to fetch budgets and expenses when the component mounts
   useEffect(() => {
-    // Fetch budgets from API
-    axios.get('/api/budgets')
-      .then(response => setBudgets(response.data))
-      .catch(error => console.error("Error fetching budgets:", error));
+    const fetchBudgetsAndExpenses = async () => {
+      try {
+        const budgetResponse = await axios.get('/api/budgets');
+        setBudgets(budgetResponse.data);
+        const expensePromises = budgetCategories.map(category =>
+          axios.get('/api/expenses', { params: { category } })
+        );
+        const expenseResponses = await Promise.all(expensePromises);
+        const expenses = expenseResponses.reduce((acc, response, index) => {
+          acc[budgetCategories[index]] = response.data.total;
+          return acc;
+        }, {});
+        setTotalExpenses(expenses);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError('Error fetching budgets and expenses');
+      }
+    };
+    fetchBudgetsAndExpenses();
+  }, [budgetCategories]);
 
-    // Fetch expenses for each category
-    budgetCategories.forEach(category => {
-      axios.get('/api/expenses', { params: { category } })
-        .then(response => {
-          setTotalExpenses(prevExpenses => ({
-            ...prevExpenses,
-            [category]: response.data.total
-          }));
-        })
-        .catch(error => console.error(`Error fetching expenses for ${category}:`, error));
-    });
-  }, []);
-
-  // Handler function for adding a new budget
-  const handleAddBudget = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    const newBudget = { category, amount, startDate, endDate }; // Create a new budget object
-
-    // Save budget to API
-    axios.post('/api/budgets', newBudget)
-      .then(response => setBudgets([...budgets, response.data]))
-      .catch(error => console.error("Error adding budget:", error)); // Log any errors
+  const handleAddBudget = async (e) => {
+    e.preventDefault();
+    const newBudget = { category, amount, startDate, endDate };
+    try {
+      const response = await axios.post('/api/budgets', newBudget);
+      setBudgets([...budgets, response.data]);
+      setCategory('');
+      setAmount('');
+      setStartDate('');
+      setEndDate('');
+    } catch (err) {
+      console.error("Error adding budget:", err);
+      setError('Error adding budget');
+    }
   };
 
-  // Render the budget form and list
   return (
     <div className="page">
       <h2>Budgets</h2>
+      {error && <p className="error">{error}</p>}
       <form onSubmit={handleAddBudget}>
         <select value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="" disabled>Select Category</option>
@@ -115,7 +119,6 @@ function BudgetPage() {
       </table>
     </div>
   );
-}
+};
 
-// Exporting the BudgetPage component as the default export
 export default BudgetPage;
