@@ -32,7 +32,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    confirmPassword: req.body.confirmPassword,
   });
   createSendToken(newUser, 201, res);
 });
@@ -126,7 +126,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // Send it to user's email
   const resetURL = `${req.protocol}//${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email`;
+  const message = `Forgot your password? Submit a PATCH request with your new password and confirmPassword to: ${resetURL}.\nIf you didn't forget your password, please ignore this email`;
   try {
     await sendEmail({
       email: user.email,
@@ -171,7 +171,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   }
   // Update changedPassordAt property fo the user
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.confirmPassword = req.body.confirmPassword;
   user.passwordRestToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
@@ -191,7 +191,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
   //  If so, update password
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.confirmPassword = req.body.confirmPassword;
   await user.save();
 
   // 4) Log user in, send JWT

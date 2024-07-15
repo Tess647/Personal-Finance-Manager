@@ -27,14 +27,14 @@ function SignUpPage() {
       return;
     }
 
-    const newUser = { email, password }; // Create a new user object
+    const newUser = { email, password, confirmPassword }; // Create a new user object
 
     // Make a POST request to the sign-up API endpoint
-    axios.post('http://localhost:5000/api/v1/user/signup', newUser)
+    axios.post('http://localhost:5000/api/v1/users/signup', newUser)
       .then(response => {
         // Log success and navigate to sign-in page
-        console.log('Sign up successful:', response.data);
-        navigate('/signin');
+        console.log('Sign up successful:', response);
+        navigate('/home');
       })
       .catch(error => {
         console.error('Error during sign up:', error);
