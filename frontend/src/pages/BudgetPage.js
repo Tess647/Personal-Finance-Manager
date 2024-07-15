@@ -37,7 +37,8 @@ const BudgetPage = () => {
       }
     };
     fetchBudgetsAndExpenses();
-  }, [budgetCategories]);
+  }, []); // Remove budgetCategories from the dependency array
+  
 
   const handleAddBudget = async (e) => {
     e.preventDefault();
