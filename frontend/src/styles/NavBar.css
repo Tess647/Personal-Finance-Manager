@@ -8,10 +8,13 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .navbar li {
-  float: left;
+  margin-right: 20px;
 }
 
 .navbar li a {
@@ -20,8 +23,22 @@
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  margin-bottom: 10px; /* Adding bottom margin */
 }
 
 .navbar li a:hover {
+  background-color: #111;
+}
+
+.navbar li button {
+  background: none;
+  border: none;
+  color: rgb(238, 89, 89);
+  padding: 14px 16px;
+  cursor: pointer;
+  margin-bottom: 10px; /* Adding bottom margin */
+}
+
+.navbar li button:hover {
   background-color: #111;
 }
