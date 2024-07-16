@@ -1,19 +1,16 @@
 // src/pages/ExpensePage.js
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchExpenses, addExpense } from '../store/expenseActions';
+import axios from '../utils/axiosConfig';
 import '../styles/Page.css';
 
 const ExpensePage = () => {
-  const dispatch = useDispatch();
-  const expenses = useSelector(state => state.expenses.expenses || []);
-  const totalExpenses = useSelector(state => state.expenses.totalExpenses || {});
-  const error = useSelector(state => state.expenses.error);
-
+  const [expenses, setExpenses] = useState([]);
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
+  const [totalExpenses, setTotalExpenses] = useState({});
+  const [error, setError] = useState('');
 
   const expenseCategories = [
     'Food', 'Transportation', 'Utilities', 'Healthcare', 'Entertainment',
@@ -21,17 +18,46 @@ const ExpensePage = () => {
   ];
 
   useEffect(() => {
-    dispatch(fetchExpenses());
-  }, [dispatch]);
+    axios.get('/api/expenses')
+      .then(response => {
+        setExpenses(response.data);
+        calculateTotalExpenses(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching expenses:", error);
+        setError('Error fetching expenses');
+      });
+  }, []);
+
+  const calculateTotalExpenses = (expenses) => {
+    const totals = {};
+    expenses.forEach(expense => {
+      if (!totals[expense.category]) {
+        totals[expense.category] = 0;
+      }
+      totals[expense.category] += parseFloat(expense.amount);
+    });
+    setTotalExpenses(totals);
+  };
 
   const handleAddExpense = (e) => {
     e.preventDefault();
     const newExpense = { amount, category, date, description };
-    dispatch(addExpense(newExpense));
-    setAmount('');
-    setCategory('');
-    setDate('');
-    setDescription('');
+
+    axios.post('/api/expenses', newExpense)
+      .then(response => {
+        const updatedExpenses = [...expenses, response.data];
+        setExpenses(updatedExpenses);
+        calculateTotalExpenses(updatedExpenses);
+        setAmount('');
+        setCategory('');
+        setDate('');
+        setDescription('');
+      })
+      .catch(error => {
+        console.error("Error adding expense:", error);
+        setError('Error adding expense');
+      });
   };
 
   return (

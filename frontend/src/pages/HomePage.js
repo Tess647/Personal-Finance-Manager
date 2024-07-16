@@ -31,7 +31,7 @@ function HomePage() {
   // Render the home page
   return (
     <div className="homepage">
-      <h1>Welcome to Chremeta - Budget Tracker</h1>
+      <h1>Welcome to Budget Tracker</h1>
       <p>Manage your expenses, budgets, and goals efficiently.</p>
       
       {/* Section to display summary stats */}

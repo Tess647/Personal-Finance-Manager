@@ -1,34 +1,17 @@
 // src/store/authReducer.js
-import { SIGN_IN, SIGN_OUT, CHECK_AUTH } from './actionTypes';
+import { SIGN_IN, SIGN_OUT } from './actionTypes';
 
 const initialState = {
   isAuthenticated: false,
-  token: null,
 };
 
-const authReducer = (state = initialState, action) => {
+export default function authReducer(state = initialState, action) {
   switch (action.type) {
     case SIGN_IN:
-      return {
-        ...state,
-        isAuthenticated: true,
-        token: action.payload,
-      };
+      return { ...state, isAuthenticated: true };
     case SIGN_OUT:
-      return {
-        ...state,
-        isAuthenticated: false,
-        token: null,
-      };
-    case CHECK_AUTH:
-      return {
-        ...state,
-        isAuthenticated: !!localStorage.getItem('token'),
-        token: localStorage.getItem('token'),
-      };
+      return { ...state, isAuthenticated: false };
     default:
       return state;
   }
-};
-
-export default authReducer;
+}
