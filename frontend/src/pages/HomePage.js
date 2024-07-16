@@ -9,7 +9,7 @@ import '../styles/HomePage.css';
 function HomePage() {
   // State to hold financial summary
   const [summary, setSummary] = useState({
-    totalBalance: 0,
+    //totalBalance: 0,
     monthlyExpenses: 0,
     goalsProgress: 0,
   });
@@ -37,12 +37,8 @@ function HomePage() {
       {/* Section to display summary stats */}
       <div className="stats">
         <div className="stat">
-          <h2>Total Balance</h2>
-          <p>${summary.totalBalance}</p>
-        </div>
-        <div className="stat">
           <h2>Monthly Expenses</h2>
-          <p>${summary.monthlyExpenses}</p>
+          <p>₦{summary.monthlyExpenses}</p>
         </div>
         <div className="stat">
           <h2>Goals Progress</h2>
