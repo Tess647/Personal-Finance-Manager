@@ -5,6 +5,9 @@ const cors = require('cors');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const userRouter = require('./routes/userRoutes');
+const budgetRouter = require('./routes/budgetRoutes');
+const expenseRouter = require('./routes/expenseRoutes');
+const goalRouter = require('./routes/goalRoutes');
 
 const app = express();
 
@@ -20,6 +23,9 @@ app.use(
 );
 // Middleware to parse JSON
 app.use(express.json());
+app.use('/api/v1/budgets', budgetRouter);
+app.use('/api/v1/expenses', expenseRouter);
+app.use('/api/v1/goals', goalRouter);
 
 // Mounting the userRouter on /api/v1/users route
 app.use('/api/v1/users', userRouter);

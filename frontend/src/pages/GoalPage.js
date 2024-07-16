@@ -11,8 +11,8 @@ const GoalPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('/api/goals')
-      .then(response => setGoals(response.data))
+    axios.get('/goals')
+      .then(response => setGoals(response.data.data.goals))
       .catch(error => {
         console.error("Error fetching goals:", error);
         setError('Error fetching goals');
@@ -23,9 +23,9 @@ const GoalPage = () => {
     e.preventDefault();
     const newGoal = { goalName, targetAmount, deadline };
 
-    axios.post('/api/goals', newGoal)
+    axios.post('/goals', newGoal)
       .then(response => {
-        setGoals([...goals, response.data]);
+        setGoals([...goals, response.data.data.goal]);
         setGoalName('');
         setTargetAmount('');
         setDeadline('');
@@ -34,6 +34,11 @@ const GoalPage = () => {
         console.error("Error adding goal:", error);
         setError('Error adding goal');
       });
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
 
   return (
@@ -77,7 +82,7 @@ const GoalPage = () => {
             <tr key={goal.id}>
               <td>{goal.goalName}</td>
               <td>{goal.targetAmount}</td>
-              <td>{goal.deadline}</td>
+              <td>{formatDate(goal.deadline)}</td>
             </tr>
           ))}
         </tbody>

@@ -18,10 +18,10 @@ const ExpensePage = () => {
   ];
 
   useEffect(() => {
-    axios.get('/api/expenses')
+    axios.get('/expenses')
       .then(response => {
-        setExpenses(response.data);
-        calculateTotalExpenses(response.data);
+        setExpenses(response.data.data.expenses);
+        calculateTotalExpenses(response.data.data.expenses);
       })
       .catch(error => {
         console.error("Error fetching expenses:", error);
@@ -44,9 +44,9 @@ const ExpensePage = () => {
     e.preventDefault();
     const newExpense = { amount, category, date, description };
 
-    axios.post('/api/expenses', newExpense)
+    axios.post('/expenses', newExpense)
       .then(response => {
-        const updatedExpenses = [...expenses, response.data];
+        const updatedExpenses = [...expenses, response.data.data.expense];
         setExpenses(updatedExpenses);
         calculateTotalExpenses(updatedExpenses);
         setAmount('');
@@ -59,6 +59,12 @@ const ExpensePage = () => {
         setError('Error adding expense');
       });
   };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+  };
+
 
   return (
     <div className="page">
@@ -119,7 +125,7 @@ const ExpensePage = () => {
             <tr key={expense.id}>
               <td>{expense.amount}</td>
               <td>{expense.category}</td>
-              <td>{expense.date}</td>
+              <td>{formatDate(expense.date)}</td>
               <td>{expense.description}</td>
             </tr>
           ))}

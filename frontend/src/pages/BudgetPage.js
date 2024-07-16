@@ -20,17 +20,18 @@ const BudgetPage = () => {
   useEffect(() => {
     const fetchBudgetsAndExpenses = async () => {
       try {
-        const budgetResponse = await axios.get('/api/budgets');
-        setBudgets(budgetResponse.data);
-        const expensePromises = budgetCategories.map(category =>
-          axios.get('/api/expenses', { params: { category } })
-        );
-        const expenseResponses = await Promise.all(expensePromises);
-        const expenses = expenseResponses.reduce((acc, response, index) => {
-          acc[budgetCategories[index]] = response.data.total;
-          return acc;
-        }, {});
-        setTotalExpenses(expenses);
+        const budgetResponse = await axios.get('/budgets');
+        console.log('response', budgetResponse);
+        setBudgets(budgetResponse.data.data.budgetsWithExpenses);
+        // const expensePromises = budgetCategories.map(category =>
+        //   axios.get('/api/expenses', { params: { category } })
+        // );
+        // const expenseResponses = await Promise.all(expensePromises);
+        // const expenses = expenseResponses.reduce((acc, response, index) => {
+        //   acc[budgetCategories[index]] = response.data.total;
+        //   return acc;
+        // }, {});
+        // setTotalExpenses(expenses);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError('Error fetching budgets and expenses');
@@ -44,8 +45,8 @@ const BudgetPage = () => {
     e.preventDefault();
     const newBudget = { category, amount, startDate, endDate };
     try {
-      const response = await axios.post('/api/budgets', newBudget);
-      setBudgets([...budgets, response.data]);
+      const response = await axios.post('/budgets', newBudget);
+      setBudgets([...budgets, response.data.data.budget]);
       setCategory('');
       setAmount('');
       setStartDate('');
@@ -54,6 +55,11 @@ const BudgetPage = () => {
       console.error("Error adding budget:", err);
       setError('Error adding budget');
     }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
 
   return (
@@ -103,15 +109,15 @@ const BudgetPage = () => {
         </thead>
         <tbody>
           {budgets.map(budget => {
-            const totalExpense = totalExpenses[budget.category] || 0;
-            const remainingBudget = budget.amount - totalExpense;
+            //const totalExpense = totalExpenses[budget.category] || 0;
+            const remainingBudget = budget.amount - budget.totalExpenses;
             return (
               <tr key={budget.id}>
                 <td>{budget.category}</td>
                 <td>{budget.amount}</td>
-                <td>{budget.startDate}</td>
-                <td>{budget.endDate}</td>
-                <td>{totalExpense}</td>
+                <td>{formatDate(budget.startDate)}</td>
+                <td>{formatDate(budget.endDate)}</td>
+                <td>{budget.totalExpenses}</td>
                 <td>{remainingBudget}</td>
               </tr>
             );

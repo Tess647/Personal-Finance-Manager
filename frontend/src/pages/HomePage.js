@@ -10,7 +10,7 @@ function HomePage() {
   // State to hold financial summary
   const [summary, setSummary] = useState({
     //totalBalance: 0,
-    monthlyExpenses: 0,
+    //monthlyExpenses: 0,
     goalsProgress: 0,
   });
 
