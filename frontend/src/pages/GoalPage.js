@@ -1,39 +1,29 @@
 // src/pages/GoalPage.js
 import React, { useState, useEffect } from 'react';
-import axios from '../utils/axiosConfig';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchGoals, addGoal } from '../store/goalActions';
 import '../styles/Page.css';
 
 const GoalPage = () => {
-  const [goals, setGoals] = useState([]);
+  const dispatch = useDispatch();
+  const goals = useSelector(state => state.goals.goals || []);
+  const error = useSelector(state => state.goals.error);
+
   const [goalName, setGoalName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [deadline, setDeadline] = useState('');
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('/api/goals')
-      .then(response => setGoals(response.data))
-      .catch(error => {
-        console.error("Error fetching goals:", error);
-        setError('Error fetching goals');
-      });
-  }, []);
+    dispatch(fetchGoals());
+  }, [dispatch]);
 
   const handleAddGoal = (e) => {
     e.preventDefault();
     const newGoal = { goalName, targetAmount, deadline };
-
-    axios.post('/api/goals', newGoal)
-      .then(response => {
-        setGoals([...goals, response.data]);
-        setGoalName('');
-        setTargetAmount('');
-        setDeadline('');
-      })
-      .catch(error => {
-        console.error("Error adding goal:", error);
-        setError('Error adding goal');
-      });
+    dispatch(addGoal(newGoal));
+    setGoalName('');
+    setTargetAmount('');
+    setDeadline('');
   };
 
   return (
