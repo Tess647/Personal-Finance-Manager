@@ -15,7 +15,17 @@ instance.interceptors.request.use(
     }
     return config;
   },
+  error => Promise.reject(error)
+);
+
+// Add a response interceptor to handle token expiration
+instance.interceptors.response.use(
+  response => response,
   error => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/signin'; // Redirect to the sign-in page
+    }
     return Promise.reject(error);
   }
 );

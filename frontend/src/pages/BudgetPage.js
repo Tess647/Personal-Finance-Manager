@@ -1,16 +1,18 @@
-// src/pages/BudgetPage.js
 import React, { useState, useEffect } from 'react';
-import axios from '../utils/axiosConfig';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBudgets, addBudget, fetchTotalExpenses } from '../store/budgetActions';
 import '../styles/Page.css';
 
 const BudgetPage = () => {
-  const [budgets, setBudgets] = useState([]);
+  const dispatch = useDispatch();
+  const budgets = useSelector(state => state.budgets.budgets || []);
+  const totalExpenses = useSelector(state => state.budgets.totalExpenses || {});
+  const error = useSelector(state => state.budgets.error);
+
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [totalExpenses, setTotalExpenses] = useState({});
-  const [error, setError] = useState('');
 
   const budgetCategories = [
     'Food', 'Transportation', 'Utilities', 'Healthcare', 'Entertainment',
@@ -18,42 +20,18 @@ const BudgetPage = () => {
   ];
 
   useEffect(() => {
-    const fetchBudgetsAndExpenses = async () => {
-      try {
-        const budgetResponse = await axios.get('/api/budgets');
-        setBudgets(budgetResponse.data);
-        const expensePromises = budgetCategories.map(category =>
-          axios.get('/api/expenses', { params: { category } })
-        );
-        const expenseResponses = await Promise.all(expensePromises);
-        const expenses = expenseResponses.reduce((acc, response, index) => {
-          acc[budgetCategories[index]] = response.data.total;
-          return acc;
-        }, {});
-        setTotalExpenses(expenses);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError('Error fetching budgets and expenses');
-      }
-    };
-    fetchBudgetsAndExpenses();
-  }, []); // Remove budgetCategories from the dependency array
-  
+    dispatch(fetchBudgets());
+    dispatch(fetchTotalExpenses());
+  }, [dispatch]);
 
-  const handleAddBudget = async (e) => {
+  const handleAddBudget = (e) => {
     e.preventDefault();
     const newBudget = { category, amount, startDate, endDate };
-    try {
-      const response = await axios.post('/api/budgets', newBudget);
-      setBudgets([...budgets, response.data]);
-      setCategory('');
-      setAmount('');
-      setStartDate('');
-      setEndDate('');
-    } catch (err) {
-      console.error("Error adding budget:", err);
-      setError('Error adding budget');
-    }
+    dispatch(addBudget(newBudget));
+    setCategory('');
+    setAmount('');
+    setStartDate('');
+    setEndDate('');
   };
 
   return (
