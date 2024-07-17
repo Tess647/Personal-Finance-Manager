@@ -10,7 +10,7 @@ process.on('uncaughtExcpetion', (err) => {
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-const DB = process.env.DATABASE;
+const DB = process.env.MONGODB_URI;
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -35,4 +35,7 @@ process.on('unhandledRejection', (err) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.send('Hello from Express!');
+});
 
