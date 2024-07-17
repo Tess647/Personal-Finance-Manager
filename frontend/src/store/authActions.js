@@ -27,15 +27,15 @@ export const signOut = () => async dispatch => {
 };
 
 // Action creator for checking authentication status
-export const checkAuth = () => async dispatch => {
-  try {
-    const response = await axios.get('/users/check-auth');
-    if (response.data.isAuthenticated) {
-      dispatch({ type: SIGN_IN });
-    } else {
-      dispatch({ type: SIGN_OUT });
-    }
-  } catch (error) {
-    console.error("Error checking authentication status:", error);
-  }
-};
+//export const checkAuth = () => async dispatch => {
+//  try {
+//    const response = await axios.get('/users/check-auth');
+//    if (response.data.isAuthenticated) {
+//      dispatch({ type: SIGN_IN });
+//    } else {
+//      dispatch({ type: SIGN_OUT });
+//    }
+//  } catch (error) {
+//    console.error("Error checking authentication status:", error);
+//  }
+//};

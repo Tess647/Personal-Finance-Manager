@@ -9,7 +9,7 @@ const BudgetPage = () => {
   const [amount, setAmount] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [totalExpenses, setTotalExpenses] = useState({});
+  //const [totalExpenses, setTotalExpenses] = useState({});
   const [error, setError] = useState('');
 
   const budgetCategories = [
