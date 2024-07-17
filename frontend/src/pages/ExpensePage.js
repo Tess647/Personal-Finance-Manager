@@ -107,7 +107,7 @@ const ExpensePage = () => {
       <ul>
         {Object.keys(totalExpenses).map(category => (
           <li key={category}>
-            {category}: ${totalExpenses[category].toFixed(2)}
+            {category}: ₦{totalExpenses[category].toFixed(2)}
           </li>
         ))}
       </ul>

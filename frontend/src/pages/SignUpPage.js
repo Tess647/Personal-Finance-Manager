@@ -30,8 +30,10 @@ function SignUpPage() {
     const newUser = { email, password, confirmPassword }; // Create a new user object
 
     // Make a POST request to the sign-up API endpoint
-    axios.post('http://localhost:5000/api/v1/users/signup', newUser)
+    axios.post('http://chremeta-version-1-171ef60fd913.herokuapp.com/v1/users/signup', newUser)
       .then(response => {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
         // Log success and navigate to sign-in page
         console.log('Sign up successful:', response);
         navigate('/home');

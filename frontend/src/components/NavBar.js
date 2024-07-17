@@ -13,7 +13,7 @@ function NavBar() {
   const handleSignOut = async () => {
     await dispatch(signOut());  // Dispatch the signOut action
     localStorage.removeItem('token');  // Remove token from local storage
-    navigate('/signin');  // Navigate to the sign-in page
+    navigate('/');  // Navigate to the sign-in page
   };
 
   return (

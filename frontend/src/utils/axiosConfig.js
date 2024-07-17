@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/api/v1', // Your API base URL
+  baseURL: 'http://chremeta-version-1-171ef60fd913.herokuapp.com/api/v1', // Your API base URL
 });
 
 // Add a request interceptor to include the token in headers

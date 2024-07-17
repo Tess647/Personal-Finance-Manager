@@ -1,6 +1,6 @@
 // src/store/authActions.js
 import axios from '../utils/axiosConfig';
-import { SIGN_IN, SIGN_OUT, CHECK_AUTH } from './actionTypes';
+import { SIGN_IN, SIGN_OUT } from './actionTypes';
 
 // Action creator for signing in
 export const signIn = (email, password, navigate) => async dispatch => {
