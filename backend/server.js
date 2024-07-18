@@ -35,7 +35,4 @@ process.on('unhandledRejection', (err) => {
   });
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello from Express!');
-});
 

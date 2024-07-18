@@ -17,9 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(
-  cors({
-    origin: 'http://localhost:3000',
-  }),
+  cors()
 );
 // Middleware to parse JSON
 app.use(express.json());
@@ -39,3 +37,7 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandler);
 
 module.exports = app;
+
+app.get('/', (req, res) => {
+  res.send('Hello from Express!');
+});

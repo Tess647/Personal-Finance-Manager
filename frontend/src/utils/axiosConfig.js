@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const instance = axios.create({
-  baseURL: 'http://https://chremeta-version-2-b5288e3a68e3.herokuapp.com/api/v1', // Your API base URL
+  baseURL: 'https://chremeta-version-2-b5288e3a68e3.herokuapp.com/api/v1', // Your API base URL
 });
 
 // Add a request interceptor to include the token in headers
